@@ -1,9 +1,44 @@
 
 const Product1 = require("../models/product.model");
 
+// Filtering and Sorting Resuable Functionality
+
+class apiFeatures {
+    constructor(query, queryString) {
+        this.query = query;
+        this.queryString = queryString;
+    }
+
+
+
+    filtering(){
+        const queryObj = {...this.queryString};
+        console.log('queryObj:', queryObj)
+        const excludedFields = ["page","sort","limit"];
+        excludedFields.forEach((element) => delete queryObj[element]); // Delete from queryString or queryOjb
+        console.log('excludedFields:', excludedFields)
+        console.log('queryObj:', queryObj)
+        let queryStr = JSON.stringify(queryObj);
+        console.log('queryStr:', queryStr)
+        queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, match => `$${match}`);
+        console.log('queryStr:', queryStr)
+        this.query.find(JSON.parse(queryStr));
+        // console.log('this:', this)
+
+        return this;
+    };
+
+    sorting(){};
+    pagination(){};
+}
+
 const getAllProduct = async (req,res,next) => {
     try {
-        const products = await Product1.find().lean().exec();
+        const features = new apiFeatures(Product1.find(), req.query).filtering();
+
+        const products = await features.query; 
+
+        // const products = await Product1.find().lean().exec();
 
         return res.status(200).json({
             products : products,
