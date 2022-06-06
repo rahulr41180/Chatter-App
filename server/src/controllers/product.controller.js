@@ -24,17 +24,27 @@ class apiFeatures {
         console.log('queryStr:', queryStr)
         this.query.find(JSON.parse(queryStr));
         // console.log('this:', this)
-
         return this;
     };
 
-    sorting(){};
+    sorting(){
+        if(this.queryString.sort) {
+            console.log('this.queryString.sort:', this.queryString.sort)
+            const sortBy = this.queryString.sort.split(",").join(" ");
+
+            this.query = this.query.sort(sortBy);
+        }
+        else {
+            this.query = this.query.sort("-createdAt");
+        }
+        return this;
+    };
     pagination(){};
 }
 
 const getAllProduct = async (req,res,next) => {
     try {
-        const features = new apiFeatures(Product1.find(), req.query).filtering();
+        const features = new apiFeatures(Product1.find(), req.query).filtering().sorting();
 
         const products = await features.query; 
 
