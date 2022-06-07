@@ -90,6 +90,8 @@ const addProduct = async (req,res,next) => {
     }
 }
 
+
+
 module.exports = {
     getAllProduct,
     addProduct
