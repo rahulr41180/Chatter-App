@@ -20,9 +20,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useState, useEffect } from "react";
 
 const pages = ['Add Country'];
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-
 
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -65,7 +64,7 @@ export const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            HOME
+            CHATTER
           </Typography>
           </Link>
 

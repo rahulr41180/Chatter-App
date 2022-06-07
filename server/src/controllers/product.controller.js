@@ -12,7 +12,12 @@ class apiFeatures {
 
 
     filtering(){
-        const queryObj = {...this.queryString};
+        
+        console.log('this.queryString:', this.queryString)
+        if(this.queryString.category === "") {
+            return this;
+        }
+        let queryObj = {...this.queryString};
         console.log('queryObj:', queryObj)
         const excludedFields = ["page","sort","limit"];
         excludedFields.forEach((element) => delete queryObj[element]); // Delete from queryString or queryOjb
