@@ -21,11 +21,15 @@ import axios from "axios";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 import { getAllData } from "../utils/ApiRoutes";
 
 export const Home = () => {
 
     const [data, setData] = useState([]);
+    console.log('data:', data)
     const [searchParams, setSearchParams] = useSearchParams();
     console.log('searchParams:', searchParams)
     const [page, setPage] = useState(Number(searchParams.get("page") || 1));
@@ -47,7 +51,9 @@ export const Home = () => {
             }
         })
         .then((res) => {
+
             console.log("res : ",res.data);
+            setData(res.data.products);
         })
 
         .catch((error) => {
@@ -90,26 +96,43 @@ export const Home = () => {
                 </div>
             </div>
             <div className="grid__items">
-                <div className="item__box">
-                    <img src="" alt="" />
-                    <div className="item__content__box">
-                        <p className="title">Lorem, ipsum.</p>
-                        <p className="price">Lorem, ipsum.</p>
-                        <p className="category">Lorem, ipsum.</p>
-                    </div>
-                </div>
+                {data.map((element,index) => {
+                    return (
+                        <div key={index+1} className="item__box">
+                            <img src={element.image} alt="" />
+                            <div className="item__content__box">
+                                <p className="title">{element.title}</p>
+                                <p className="price">{element.price}</p>
+                                <p className="category">{element.category}</p>
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
+            <Stack style={{
+                
+                border : "0px solid",
+                width : "fit-content",
+                margin: "1vw auto auto auto"
+            }} spacing={1}>
+                <Pagination onChange={(event) => {
+                    console.log("pagination :", event.currentTarget.textContent);
+                    setPage(event.currentTarget.textContent);
+                }} count={4} color="primary" />
+            </Stack>
         </Container>
     )
 }
 
 const Container = styled.div`
-    border : 1px solid;
+
+    /* border : 1px solid; */
     width: 99.84vw;
     padding: .5vw 0 0 0;
     .filtering__sorting__box {
-        border: 1px solid;
-        width: 98%;
+
+        /* border: 1px solid; */
+        width: 92%;
         margin: auto;
         padding: .6vw;
         display: flex;
@@ -139,9 +162,9 @@ const Container = styled.div`
         }
     }
     .grid__items {
-        border : 1px solid;
+        /* border : 1px solid; */
         margin: 1vw auto auto auto;
-        width: 91.8%;
+        width: 90%;
         padding: 1vw;
         display: grid;
         grid-template-columns: repeat(4,1fr);
@@ -149,12 +172,12 @@ const Container = styled.div`
         .item__box {
             border : 1px solid;
             img {
-                border: 1px solid;
-                width: 99.81%;
+                /* border: 1px solid; */
+                width: 99.7%;
                 height: 40vh;
             }
             .item__content__box {
-                border: 1px solid;
+                /* border: 1px solid; */
                 margin: auto;
                 padding: .4vw 0 0 0;
                 width: 99.35%;
@@ -162,7 +185,7 @@ const Container = styled.div`
                 flex-direction: column;
                 gap: .2vw;
                 p {
-                    border: 1px solid;
+                    /* border: 1px solid; */
                     margin : auto auto auto 0;   
                 }
             }  

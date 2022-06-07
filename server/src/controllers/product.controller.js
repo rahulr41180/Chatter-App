@@ -9,10 +9,7 @@ class apiFeatures {
         this.queryString = queryString;
     }
 
-
-
     filtering(){
-        
         console.log('this.queryString:', this.queryString)
         if(this.queryString.category === "") {
             return this;
@@ -48,10 +45,15 @@ class apiFeatures {
     };
     pagination(){
         const page = this.queryString.page * 1 || 1;
-        const limit = this.queryString.limit * 1 || 5;
-        const skip = (page-1) * limit;
-        this.query = this.query.skip(skip).limit(limit);
+        console.log('page:', page);
 
+
+        const limit = this.queryString.limit * 1 || 5;
+        console.log('limit:', limit)
+        const skip = (page-1) * limit;
+        console.log('skip:', skip)
+        this.query = this.query.skip(skip).limit(limit);
+        console.log('this:', this)
         return this;
     };
 }
