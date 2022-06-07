@@ -30,7 +30,9 @@ class apiFeatures {
     sorting(){
         if(this.queryString.sort) {
             console.log('this.queryString.sort:', this.queryString.sort)
+
             const sortBy = this.queryString.sort.split(",").join(" ");
+            console.log('sortBy:', sortBy)
 
             this.query = this.query.sort(sortBy);
         }
@@ -39,12 +41,19 @@ class apiFeatures {
         }
         return this;
     };
-    pagination(){};
+    pagination(){
+        const page = this.queryString.page * 1 || 1;
+        const limit = this.queryString.limit * 1 || 5;
+        const skip = (page-1) * limit;
+        this.query = this.query.skip(skip).limit(limit);
+
+        return this;
+    };
 }
 
 const getAllProduct = async (req,res,next) => {
     try {
-        const features = new apiFeatures(Product1.find(), req.query).filtering().sorting();
+        const features = new apiFeatures(Product1.find(), req.query).filtering().sorting().pagination();
 
         const products = await features.query; 
 
